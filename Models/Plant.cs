@@ -97,5 +97,6 @@ namespace ScanPlantAPI.Models
         /// </summary>
         [ForeignKey("UserId")]
         public ApplicationUser User { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

@@ -22,6 +22,7 @@ namespace ScanPlantAPI.Data
         /// Tabela de plantas
         /// </summary>
         public DbSet<Plant> Plants { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         /// <summary>
         /// Configuração do modelo
@@ -42,6 +43,25 @@ namespace ScanPlantAPI.Data
                 // Relacionamento com usuário
                 entity.HasOne(e => e.User)
                       .WithMany(u => u.Plants)
+                      .HasForeignKey(e => e.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<Comment>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Text).IsRequired().HasMaxLength(500);
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                // Relacionamento com planta
+                entity.HasOne(e => e.Plant)
+                      .WithMany(p => p.Comments)
+                      .HasForeignKey(e => e.PlantId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                // Relacionamento com usuário
+                entity.HasOne(e => e.User)
+                      .WithMany(u => u.Comments)
                       .HasForeignKey(e => e.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
             });
