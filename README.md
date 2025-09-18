@@ -74,4 +74,4 @@ A documentação Swagger estará disponível em:
 
 ## Integração com o Frontend
 
-Para integrar esta API com o aplicativo React Native existente, atualize as chamadas de API no frontend para apontar para os endpoints desta API em vez do Supabase.
+Para integrar esta API com o aplicativo React Native existente, atualize as chamadas de API no frontend para apontar para os endpoints desta API em vez do Supabase.# Projeto-ScanPlant
