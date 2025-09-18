@@ -31,5 +31,6 @@ namespace ScanPlantAPI.Models
         /// </summary>
         public virtual ICollection<Plant> Plants { get; set; } = new List<Plant>();
         public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Lembrete> Lembretes { get; set; } = new List<Lembrete>();
     }
 }

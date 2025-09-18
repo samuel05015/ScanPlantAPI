@@ -23,6 +23,7 @@ namespace ScanPlantAPI.Data
         /// </summary>
         public DbSet<Plant> Plants { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<Lembrete> Lembretes { get; set; }
 
         /// <summary>
         /// Configuração do modelo
@@ -64,6 +65,27 @@ namespace ScanPlantAPI.Data
                       .WithMany(u => u.Comments)
                       .HasForeignKey(e => e.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // Configuração da tabela de lembretes
+            modelBuilder.Entity<Lembrete>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Titulo).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Descricao).HasMaxLength(500);
+                entity.Property(e => e.CriadoEm).HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                // Relacionamento obrigatório com usuário
+                entity.HasOne(e => e.User)
+                      .WithMany(u => u.Lembretes)
+                      .HasForeignKey(e => e.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                // Relacionamento opcional com planta
+                entity.HasOne(e => e.Plant)
+                      .WithMany()
+                      .HasForeignKey(e => e.PlantId)
+                      .OnDelete(DeleteBehavior.SetNull);
             });
         }
     }

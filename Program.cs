@@ -47,6 +47,8 @@ builder.Services.AddScoped<IStorageService, StorageService>();
 
 // Registrar o serviço de comentários
 builder.Services.AddScoped<ICommentService, CommentService>();
+// Registrar o serviço de lembretes
+builder.Services.AddScoped<ILembreteService, LembreteService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
