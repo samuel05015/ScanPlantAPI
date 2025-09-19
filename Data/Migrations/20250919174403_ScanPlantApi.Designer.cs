@@ -9,11 +9,11 @@ using ScanPlantAPI.Data;
 
 #nullable disable
 
-namespace ScanPlantAPI.Migrations
+namespace ScanPlantAPI.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250918180611_AddLembretes")]
-    partial class AddLembretes
+    [Migration("20250919174403_ScanPlantApi")]
+    partial class ScanPlantApi
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -325,6 +325,65 @@ namespace ScanPlantAPI.Migrations
                     b.ToTable("Lembretes");
                 });
 
+            modelBuilder.Entity("ScanPlantAPI.Models.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("LinkUrl")
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<int?>("PlantId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("ReadAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("SentAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlantId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("ScanPlantAPI.Models.Plant", b =>
                 {
                     b.Property<int>("Id")
@@ -487,6 +546,24 @@ namespace ScanPlantAPI.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ScanPlantAPI.Models.Notification", b =>
+                {
+                    b.HasOne("ScanPlantAPI.Models.Plant", "Plant")
+                        .WithMany()
+                        .HasForeignKey("PlantId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("ScanPlantAPI.Models.ApplicationUser", "User")
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Plant");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ScanPlantAPI.Models.Plant", b =>
                 {
                     b.HasOne("ScanPlantAPI.Models.ApplicationUser", "User")
@@ -503,6 +580,8 @@ namespace ScanPlantAPI.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Lembretes");
+
+                    b.Navigation("Notifications");
 
                     b.Navigation("Plants");
                 });

@@ -8,7 +8,7 @@ using ScanPlantAPI.Data;
 
 #nullable disable
 
-namespace ScanPlantAPI.Migrations
+namespace ScanPlantAPI.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
