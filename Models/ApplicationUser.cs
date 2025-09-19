@@ -32,5 +32,10 @@ namespace ScanPlantAPI.Models
         public virtual ICollection<Plant> Plants { get; set; } = new List<Plant>();
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Lembrete> Lembretes { get; set; } = new List<Lembrete>();
+        
+        /// <summary>
+        /// Coleção de notificações destinadas ao usuário
+        /// </summary>
+        public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
     }
 }

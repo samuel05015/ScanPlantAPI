@@ -49,6 +49,9 @@ builder.Services.AddScoped<IStorageService, StorageService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 // Registrar o serviço de lembretes
 builder.Services.AddScoped<ILembreteService, LembreteService>();
+// Registrar serviços de notificações
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddSingleton<INotificationSender, InAppNotificationSender>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -107,7 +110,6 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader()
             .AllowCredentials());
 });
-
 
 
 

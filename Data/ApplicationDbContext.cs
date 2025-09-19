@@ -24,6 +24,7 @@ namespace ScanPlantAPI.Data
         public DbSet<Plant> Plants { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Lembrete> Lembretes { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         /// <summary>
         /// Configuração do modelo
@@ -78,6 +79,29 @@ namespace ScanPlantAPI.Data
                 // Relacionamento obrigatório com usuário
                 entity.HasOne(e => e.User)
                       .WithMany(u => u.Lembretes)
+                      .HasForeignKey(e => e.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                // Relacionamento opcional com planta
+                entity.HasOne(e => e.Plant)
+                      .WithMany()
+                      .HasForeignKey(e => e.PlantId)
+                      .OnDelete(DeleteBehavior.SetNull);
+            });
+
+            // Configuração da tabela de notificações
+            modelBuilder.Entity<Notification>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Title).IsRequired().HasMaxLength(120);
+                entity.Property(e => e.Message).IsRequired().HasMaxLength(1000);
+                entity.Property(e => e.Type).HasMaxLength(60);
+                entity.Property(e => e.Status).HasMaxLength(20);
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                // Relacionamento obrigatório com usuário destinatário
+                entity.HasOne(e => e.User)
+                      .WithMany(u => u.Notifications)
                       .HasForeignKey(e => e.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
 
